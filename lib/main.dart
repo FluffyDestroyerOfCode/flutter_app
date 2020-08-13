@@ -29,21 +29,22 @@ class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _saved = Set<WordPair>();
   final _biggerFont = TextStyle(fontSize: 18.0);
-  final _payments = <String>[];
+  List<String> _payments = <String>[];
   var _count = 0;
 
   Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
 
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
-        });
+//    return ListView.builder(
+//        padding: EdgeInsets.all(16.0),
+//        itemBuilder: /*1*/ (context, i) {
+//          if (i.isOdd) return Divider(); /*2*/
+//
+//          final index = i ~/ 2; /*3*/
+//          if (index >= _suggestions.length) {
+//            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
+//          }
+//          return _buildRow(_suggestions[index]);
+//        });
   }
 
   Widget _buildRow(WordPair pair) {
@@ -133,7 +134,7 @@ class _RandomWordsState extends State<RandomWords> {
                     print('dafug');
                     _payments.add(value);
                     _payments.forEach((element) => {print(element)});
-                  },
+                  }  ,
                 )
               );
             }
@@ -152,7 +153,28 @@ class _RandomWordsState extends State<RandomWords> {
           IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
         ],
       ),
-      body: _buildSuggestions(),
+     body: Column(
+       children: <Widget>[
+        Expanded(
+          child: ListView.builder(
+          padding: const EdgeInsets.all(8),
+        itemCount: _payments.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            height: 50,
+            margin: EdgeInsets.all(2),
+            color: Colors.grey,
+        child: Center(
+            child: Text('${_payments[index]} (0)',
+          style: TextStyle(fontSize: 18),
+        )
+      ),
+      );
+      }
+      )
+      )
+      ]
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() => _addPayment()),
         tooltip: 'Increment Counter',
